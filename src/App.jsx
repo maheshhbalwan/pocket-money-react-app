@@ -1,4 +1,3 @@
-// import { response } from "express";
 import { useState } from "react";
 
 function App() {
@@ -8,18 +7,26 @@ function App() {
 
   function addNewTransaction(e) {
     e.preventDefault();
-    // const url = process.env.REACT_APP_API_URL + "/transaction";
-    const url = "http://localhost:5000/api" + "/transaction";
-    // const url = "https://localhost:4000/api/test" ;
-    // const url = "https://localhost:4000/api" + "/test";
+    // const url = (process.env.REACT_APP_API_URL + "/transaction");
+    const url = "http://localhost:4000/api" + "/transaction";
     console.log(url);
+
+    const price = name.split(" ")[0];
 
     fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, description, datetime }),
+      body: JSON.stringify({
+        price,
+        name: name.substring(price.length + 1),
+        description,
+        datetime,
+      }),
     }).then((response) => {
       response.json().then((json) => {
+        setName("");
+        setDatetime("");
+        setDescription("");
         console.log("result", json);
       });
     });
@@ -45,7 +52,7 @@ function App() {
           <input
             type="text"
             value={description}
-            onChange={(e) => e.target.value}
+            onChange={(e) => setDescription(e.target.value)}
             placeholder={"description"}
           />
         </div>
